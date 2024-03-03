@@ -308,6 +308,7 @@ class Trie{
 
 
 // fenwick tree code deals with updates log(n) time and provide prefix sum in also log(n) time.
+// Remember while copying fenwick code indexing must start with ********* 1 only  **********
 const int N=1e6+4;
 vector<int>fenwick(N,0);
 void update_fen(int i,int val){
@@ -488,3 +489,17 @@ vector<int> Topo_sort(vector<vector<int>>g,int N){
 int main(){
     return 0;
 }
+
+
+
+
+// CORE LEARNINGS :
+// 1. Remeber whenever you are using Fenwick tree then you have to ensure that indexing begin with 1
+// 2. if you want to fill an array with a praticular value then you can write like :
+//     fill(v.begin(),v.end(),val);
+// 3. Whenever you are using Disjoint Set Union the ensure that you call parent of every again before doing any
+// computation as while joining two groups the parent may not get modified
+
+
+// If you know manhattan distance between two point let say (x1,y1) and (x2,y2) form (x,y) then there is formula for calculating
+// (x,y) as focus on matrix and draw simple lines between point these representing manhattan distance 
