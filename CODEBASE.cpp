@@ -117,6 +117,27 @@ void binary_lifting(int vertex, int parent, vector<vector<int>> &g, vector<vecto
         binary_lifting(child, vertex, g, dp);
     }
 }
+int findlca(int v, int u, int d, vector<vector<int>> &dp)
+{
+    if (u == v)
+        return v;
+    int lo = 0, hi = d, mid, anc, anc1;
+    while (hi - lo > 1)
+    {
+        mid = (hi + lo) / 2;
+        anc = getKthAncestor(v, mid, dp);
+        anc1 = getKthAncestor(u, mid, dp);
+        if (anc == anc1)
+            hi = mid;
+        else
+            lo = mid + 1;
+    }
+    anc = getKthAncestor(v, lo, dp);
+    anc1 = getKthAncestor(u, lo, dp);
+    if (anc == anc1)
+        return anc;
+    return getKthAncestor(v, hi, dp);
+}
 
 // O(nlogn) ==> approach
 int longestIncreasingSubsequence(vector<int> &arr, int n)
