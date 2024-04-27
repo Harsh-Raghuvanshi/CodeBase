@@ -591,6 +591,49 @@ vector<int> Topo_sort(vector<vector<int>> g, int N)
     return topo;
 }
 
+// To get Bridges in a graph using tarjan's algorithm
+// just call getBridges function ans will give you with bridges maing thing is that the connections that are given in getBridges function just contain edges list so first we are preparing an adjacency matrix list.
+
+int timer = 1;
+void dfs(int vertex, int parent, vector<vector<int>> &g, vector<bool> &vis, vector<int> &tin, vector<int> &low, vector<vector<int>> &ans)
+{
+    vis[vertex] = true;
+    tin[vertex] = low[vertex] = timer;
+    timer++;
+    for (auto child : g[vertex])
+    {
+        if (child == parent)
+            continue;
+        if (vis[child])
+        {
+            low[vertex] = min(low[vertex], low[child]);
+        }
+        else
+        {
+            dfs(child, vertex, g, vis, tin, low, ans);
+            low[vertex] = min(low[vertex], low[child]);
+            if (low[child] > tin[vertex])
+            {
+                ans.push_back({vertex, child});
+            }
+        }
+    }
+}
+vector<vector<int>> getBridges(int n, vector<vector<int>> &connections)
+{
+    vector<vector<int>> g(n);
+    for (auto el : connections)
+    {
+        g[el[0]].push_back(el[1]);
+        g[el[1]].push_back(el[0]);
+    }
+    vector<int> tin(n), low(n);
+    vector<vector<int>> ans;
+    vector<bool> vis(n, false);
+    dfs(0, -1, g, vis, tin, low, ans);
+    return ans;
+}
+
 int main()
 {
     return 0;
