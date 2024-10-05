@@ -1,5 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int mod = 998244353;
+const int Mod = 1e9 + 7;
+#define ll long long
+typedef vector<long long> vll;
+typedef vector<int> vi;
+#define py cout << "YES" << endl
+#define pn cout << "NO" << endl
+
+template <class T>
+int bitct(T a)
+{
+    int i = 0;
+    while (a)
+    {
+        a /= 2;
+        i++;
+    }
+    return i;
+}
+
+template <class T>
+void printv(vector<T> a)
+{
+    for (T &el : a)
+        cout << el << " ";
+    cout << endl;
+}
+
+ll max(ll a, ll b)
+{
+    if (a > b)
+        return a;
+    return b;
+}
+
+ll min(ll a, ll b)
+{
+    if (a > b)
+        return b;
+    return a;
+}
+
+ll gcd(ll a, ll b)
+{
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
 
 struct custom_hash
 {
