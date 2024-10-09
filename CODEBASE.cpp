@@ -7,6 +7,12 @@ typedef vector<long long> vll;
 typedef vector<int> vi;
 #define py cout << "YES" << endl
 #define pn cout << "NO" << endl
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// typedef tree<int,null_type,less<int>,rb_tree_tag,
+// tree_order_statistics_node_update> indexed_set;
+
+// to use this 
 
 template <class T>
 int bitct(T a)
