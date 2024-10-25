@@ -763,3 +763,61 @@ int main()
 
 // If you know manhattan distance between two point let say (x1,y1) and (x2,y2) form (x,y) then there is formula for calculating
 // (x,y) as focus on matrix and draw simple lines between point these representing manhattan distance
+
+
+
+
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+#ifndef ONLINE_JUDGE
+#define debug(x) cout<<#x<<" ";_print(x);cout<<endl;
+#define sep() cout<<"************************************"<<endl;
+#else
+#define debug(x)
+#define sep()
+#endif
+template<class T>void _print(T var){
+    cout<<var<<" ";
+}
+template<class T> void _print(vector<T> v){
+    cout<<"[";for(T i:v)_print(i),_print(',');cout<<"]\n";
+}
+template<class T> void _print(set<T> st){
+    cout<<"[";for(T i:st)_print(i),_print(',');cout<<"]\n";
+}
+template<class T1,class T2> void _print(map<T1,T2>mp){
+    cout<<"[\n";for(auto i:mp){_print("{"),_print(i.first),_print(":"),_print(i.second),_print("}");cout<<endl;}cout<<"[\n";
+}
+
+void solve(){
+    int a=24;
+    sep();
+    string b="Harsh raghuvanshi";
+    cout<<"Hello how are you"<<endl;
+    debug(a);
+    a++;
+    cout<<"now it is "<<endl;
+    debug(a);
+    cout<<"Hii"<<endl;
+    debug(b);
+    map<int,string>mp;
+    mp.insert({1,"Harsh"});
+    mp.insert({2,"raghuvanshi"});
+    mp.insert({3,"Rohit"});
+    debug(mp);
+    sep();
+    vector<string>v1={"hello","hii","namaste"};
+    debug(v1);
+}
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t;
+    cin>>t;
+    while(t--)
+        solve();
+    return 0;
+}
