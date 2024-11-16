@@ -770,7 +770,6 @@ int main()
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
-
 #ifndef ONLINE_JUDGE
 #define debug(x) cout<<#x<<" ";_print(x);cout<<endl;
 #define sep() cout<<"************************************"<<endl;
@@ -781,6 +780,9 @@ using namespace std;
 template<class T>void _print(T var){
     cout<<var<<" ";
 }
+template<class T1,class T2>void _print(pair<T1,T2> p){
+    cout<<"{"<<p.first<<","<<p.second<<"}"<<" ";
+}
 template<class T> void _print(vector<T> v){
     cout<<"[";for(T i:v)_print(i),_print(',');cout<<"]\n";
 }
@@ -788,28 +790,22 @@ template<class T> void _print(set<T> st){
     cout<<"[";for(T i:st)_print(i),_print(',');cout<<"]\n";
 }
 template<class T1,class T2> void _print(map<T1,T2>mp){
-    cout<<"[\n";for(auto i:mp){_print("{"),_print(i.first),_print(":"),_print(i.second),_print("}");cout<<endl;}cout<<"[\n";
+    cout<<"[\n";for(auto i:mp){_print("{"),_print(i.first),_print(":"),_print(i.second),_print("}");cout<<endl;}cout<<"]\n";
 }
 
 void solve(){
-    int a=24;
-    sep();
-    string b="Harsh raghuvanshi";
-    cout<<"Hello how are you"<<endl;
-    debug(a);
-    a++;
-    cout<<"now it is "<<endl;
-    debug(a);
-    cout<<"Hii"<<endl;
-    debug(b);
-    map<int,string>mp;
-    mp.insert({1,"Harsh"});
-    mp.insert({2,"raghuvanshi"});
-    mp.insert({3,"Rohit"});
-    debug(mp);
-    sep();
-    vector<string>v1={"hello","hii","namaste"};
-    debug(v1);
+   vector<int>v={1,2,3};
+   vector<pair<int,int>>vp={{1,1},{2,2},{3,3}};
+   map<int,string>mp={{1,"harsh"},{2,"rohan"},{3,"mridul"}};
+   set<string>st={"cow","dog","buffalo"};
+   debug(v);
+   sep();
+   debug(mp);
+   sep();
+   debug(st);
+   sep();
+   debug(vp);
+
 }
 int main()
 {
