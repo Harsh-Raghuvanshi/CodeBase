@@ -749,6 +749,90 @@ vector<int> articulationPoints(int n, vector<int> adj[])
         return {-1};
     return ans;
 }
+
+// DFS for Hierholzer's Algorithm for Directed graph
+
+// This Algorithm is used to find eulerian path or circuit if exists in a directed graph
+// The main logic in algo is that for any node you invoke a dfs function over its child and when dfs get stuck you start backtracking and pushing them into answer array,  and reach the node again ,  if the node still has some more child visit them end at last push the node also in answer array
+// First create a adjacency list to represent the directed graph  also prepare netout map which states that how many net edges are going outward from a node
+// pick the node whose netout is 1 because it will be the starting if no such node pick a node with an outgoing edge
+
+bool isEulerianDirected(map<int, int> &netout,int &startNode)
+{
+    int ct = 0;
+    for (auto &el : netout)
+    {
+        if (abs(el.second) > 1)
+            return false;
+        else if (abs(el.second) == 1)
+            ct++;
+        if(el.second==1){
+            startNode=el.first;
+        }
+    }
+    if (ct == 2)
+    {
+        cout << "It has only Eulerian PATH" << endl;
+    }
+    if (ct == 0)
+    {
+        cout << "It has Eulerian PATH and CIRCUIT" << endl;
+    }
+    return ct == 2 || ct == 0;
+} 
+void dfsDirected(int vertex, vector<vector<int>> &g, vector<int> &ans) {
+    while (!g[vertex].empty()) {
+        int el = g[vertex].back(); 
+        g[vertex].pop_back();      
+        dfsDirected(el, g, ans);
+    }
+    ans.push_back(vertex);
+}
+
+
+
+// DFS for Hierholzer's Algorithm for Undirected graph
+void dfsUndirected(int vertex, vector<vector<int>> &graph, vector<int> &ans, map<pair<int, int>, bool> &usedEdges) {
+    while (!graph[vertex].empty()) {
+        int neighbor = graph[vertex].back();
+        graph[vertex].pop_back();
+
+        // Skip if the edge is already used
+        if (usedEdges[{vertex, neighbor}] || usedEdges[{neighbor, vertex}]) continue;
+
+        // Mark the edge as used in both directions
+        usedEdges[{vertex, neighbor}] = true;
+        usedEdges[{neighbor, vertex}] = true;
+
+        // Recur for the neighbor
+        dfsUndirected(neighbor, graph, ans, usedEdges);
+    }
+    ans.push_back(vertex);
+}
+
+// Check if the graph has an Eulerian Path or Circuit
+bool isEulerianUndirected(const vector<vector<int>> &graph, int &startNode, int &oddCount) {
+    int n = graph.size();
+    oddCount = 0;
+    startNode = -1;
+
+    for (int i = 0; i < n; i++) {
+        if (graph[i].size() % 2 != 0) {
+            oddCount++;
+            startNode = i; // Start from any odd degree node
+        } else if (graph[i].size() > 0 && startNode == -1) {
+            startNode = i; // If all degrees are even, start from any non-isolated node
+        }
+    }
+
+    // Eulerian Circuit if all degrees are even
+    // Eulerian Path if exactly 2 nodes have odd degree
+    return (oddCount == 0 || oddCount == 2);
+}
+
+
+
+
 int main()
 {
     return 0;
