@@ -756,7 +756,7 @@ vector<int> articulationPoints(int n, vector<int> adj[])
 // The main logic in algo is that for any node you invoke a dfs function over its child and when dfs get stuck you start backtracking and pushing them into answer array,  and reach the node again ,  if the node still has some more child visit them end at last push the node also in answer array
 // First create a adjacency list to represent the directed graph  also prepare netout map which states that how many net edges are going outward from a node
 // pick the node whose netout is 1 because it will be the starting if no such node pick a node with an outgoing edge
-
+// we can also convert dfsDirected function into finding the hamiltonian approach by adding a condition while entering the function which is if(st.find(s)!=st.end())return it means if we have intiated call for a string then we will not reach here first we have to go for another child [i.e do post order traversal]
 bool isEulerianDirected(map<int, int> &netout,int &startNode)
 {
     int ct = 0;
@@ -831,6 +831,20 @@ bool isEulerianUndirected(const vector<vector<int>> &graph, int &startNode, int 
 }
 
 
+// I have to write backtrack algo for the finding hamiltonian path if it exists
+// In hamiltonian circuit or path approach basically we have to visit all the nodes in manner such that no nodes will get visited twice
+void findHamiltonian(vector<vector<int>>&g,vector<int>&path,int vertex,vector<bool>&vis,vector<int>&ans){
+    vis[vertex]=true;
+    path.push_back(vertex);
+    if(all_of(vis.begin(),vis.end(),[](bool x){return x==true;})){
+        ans=path;
+    }
+    for(auto &child:g[path.back()]){
+        if(!vis[child])findHamiltonian(g,path,child,vis,ans);
+    }
+    vis[vertex]=false;
+    path.pop_back();
+}
 
 
 int main()
