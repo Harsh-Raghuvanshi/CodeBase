@@ -12,7 +12,7 @@ typedef vector<int> vi;
 // typedef tree<int,null_type,less<int>,rb_tree_tag,
 // tree_order_statistics_node_update> indexed_set;
 
-// to use this 
+// to use this
 
 template <class T>
 int bitct(T a)
@@ -54,7 +54,6 @@ ll gcd(ll a, ll b)
         return a;
     return gcd(b, a % b);
 }
-
 
 struct custom_hash
 {
@@ -486,7 +485,7 @@ void build(int ind, int low, int high)
 // l and r -> are the range whose result we have to compute and it will not vary
 int query(int ind, int low, int high, int l, int r)
 {
-    if (low >= l and r <= high)
+    if (low >= l and high <= r)
         return seg[ind];
     if (r < low || l > high)
         return 0;
@@ -518,36 +517,47 @@ void pointUpdate(int ind, int low, int high, int node, int val)
 // now dealing with range update in case of it we will do lazy update
 // for this we create a replica of Segment tree which will keep account of lazy update hence we call it lazy tree
 vector<int> lazy(4 * N);
+vector<int> lazy(4 * N);
+vector<int> seg(4 * N);
+
 void rangeUpdate(int ind, int low, int high, int l, int r, int val)
 {
-    // first we propagate any lazy update if pending
     if (lazy[ind] != 0)
     {
         seg[ind] += (high - low + 1) * lazy[ind];
+        
+        
         if (low != high)
         {
-            lazy[2 * ind + 1] = lazy[ind];
-            lazy[2 * ind + 2] = lazy[ind];
+            lazy[2 * ind + 1] += lazy[ind];  
+            lazy[2 * ind + 2] += lazy[ind];  
         }
+        
         lazy[ind] = 0;
     }
-    if (r < low || l > high || low > high)
+
+    if (r < low || l > high)
         return;
-    if (low >= l and high <= r)
+
+    if (low >= l && high <= r)
     {
         seg[ind] += (high - low + 1) * val;
+        
         if (low != high)
         {
-            seg[2 * ind + 1] += val;
-            seg[2 * ind + 2] += val;
+            lazy[2 * ind + 1] += val;  
+            lazy[2 * ind + 2] += val;  
         }
         return;
     }
+
     int mid = (low + high) / 2;
     rangeUpdate(2 * ind + 1, low, mid, l, r, val);
     rangeUpdate(2 * ind + 2, mid + 1, high, l, r, val);
+
     seg[ind] = (seg[2 * ind + 1] + seg[2 * ind + 2]);
 }
+
 
 int queryLazy(int ind, int low, int high, int l, int r)
 {
@@ -690,7 +700,7 @@ vector<vector<int>> getBridges(int n, vector<vector<int>> &connections)
 }
 
 // For finding articulation point in the graph articulation points are those points or nodes on whose removal the graph will get divided into two components
-// See here in articulationPoints function we have already prepared adjacency list 
+// See here in articulationPoints function we have already prepared adjacency list
 int timer = 1;
 void dfs(int node, int parent, vector<int> &vis, int tin[], int low[],
          vector<int> &mark, vector<int> adj[])
@@ -757,7 +767,7 @@ vector<int> articulationPoints(int n, vector<int> adj[])
 // First create a adjacency list to represent the directed graph  also prepare netout map which states that how many net edges are going outward from a node
 // pick the node whose netout is 1 because it will be the starting if no such node pick a node with an outgoing edge
 // we can also convert dfsDirected function into finding the hamiltonian approach by adding a condition while entering the function which is if(st.find(s)!=st.end())return it means if we have intiated call for a string then we will not reach here first we have to go for another child [i.e do post order traversal]
-bool isEulerianDirected(map<int, int> &netout,int &startNode)
+bool isEulerianDirected(map<int, int> &netout, int &startNode)
 {
     int ct = 0;
     for (auto &el : netout)
@@ -766,8 +776,9 @@ bool isEulerianDirected(map<int, int> &netout,int &startNode)
             return false;
         else if (abs(el.second) == 1)
             ct++;
-        if(el.second==1){
-            startNode=el.first;
+        if (el.second == 1)
+        {
+            startNode = el.first;
         }
     }
     if (ct == 2)
@@ -779,26 +790,29 @@ bool isEulerianDirected(map<int, int> &netout,int &startNode)
         cout << "It has Eulerian PATH and CIRCUIT" << endl;
     }
     return ct == 2 || ct == 0;
-} 
-void dfsDirected(int vertex, vector<vector<int>> &g, vector<int> &ans) {
-    while (!g[vertex].empty()) {
-        int el = g[vertex].back(); 
-        g[vertex].pop_back();      
+}
+void dfsDirected(int vertex, vector<vector<int>> &g, vector<int> &ans)
+{
+    while (!g[vertex].empty())
+    {
+        int el = g[vertex].back();
+        g[vertex].pop_back();
         dfsDirected(el, g, ans);
     }
     ans.push_back(vertex);
 }
 
-
-
 // DFS for Hierholzer's Algorithm for Undirected graph
-void dfsUndirected(int vertex, vector<vector<int>> &graph, vector<int> &ans, map<pair<int, int>, bool> &usedEdges) {
-    while (!graph[vertex].empty()) {
+void dfsUndirected(int vertex, vector<vector<int>> &graph, vector<int> &ans, map<pair<int, int>, bool> &usedEdges)
+{
+    while (!graph[vertex].empty())
+    {
         int neighbor = graph[vertex].back();
         graph[vertex].pop_back();
 
         // Skip if the edge is already used
-        if (usedEdges[{vertex, neighbor}] || usedEdges[{neighbor, vertex}]) continue;
+        if (usedEdges[{vertex, neighbor}] || usedEdges[{neighbor, vertex}])
+            continue;
 
         // Mark the edge as used in both directions
         usedEdges[{vertex, neighbor}] = true;
@@ -811,16 +825,21 @@ void dfsUndirected(int vertex, vector<vector<int>> &graph, vector<int> &ans, map
 }
 
 // Check if the graph has an Eulerian Path or Circuit
-bool isEulerianUndirected(const vector<vector<int>> &graph, int &startNode, int &oddCount) {
+bool isEulerianUndirected(const vector<vector<int>> &graph, int &startNode, int &oddCount)
+{
     int n = graph.size();
     oddCount = 0;
     startNode = -1;
 
-    for (int i = 0; i < n; i++) {
-        if (graph[i].size() % 2 != 0) {
+    for (int i = 0; i < n; i++)
+    {
+        if (graph[i].size() % 2 != 0)
+        {
             oddCount++;
             startNode = i; // Start from any odd degree node
-        } else if (graph[i].size() > 0 && startNode == -1) {
+        }
+        else if (graph[i].size() > 0 && startNode == -1)
+        {
             startNode = i; // If all degrees are even, start from any non-isolated node
         }
     }
@@ -830,85 +849,86 @@ bool isEulerianUndirected(const vector<vector<int>> &graph, int &startNode, int 
     return (oddCount == 0 || oddCount == 2);
 }
 
-
 // I have to write backtrack algo for the finding hamiltonian path if it exists
 // In hamiltonian circuit or path approach basically we have to visit all the nodes in manner such that no nodes will get visited twice
-void findHamiltonian(vector<vector<int>>&g,vector<int>&path,int vertex,vector<bool>&vis,vector<int>&ans){
-    vis[vertex]=true;
+void findHamiltonian(vector<vector<int>> &g, vector<int> &path, int vertex, vector<bool> &vis, vector<int> &ans)
+{
+    vis[vertex] = true;
     path.push_back(vertex);
-    if(all_of(vis.begin(),vis.end(),[](bool x){return x==true;})){
-        ans=path;
+    if (all_of(vis.begin(), vis.end(), [](bool x)
+               { return x == true; }))
+    {
+        ans = path;
     }
-    for(auto &child:g[path.back()]){
-        if(!vis[child])findHamiltonian(g,path,child,vis,ans);
+    for (auto &child : g[path.back()])
+    {
+        if (!vis[child])
+            findHamiltonian(g, path, child, vis, ans);
     }
-    vis[vertex]=false;
+    vis[vertex] = false;
     path.pop_back();
 }
 
+// Legandre's theorem which is use to overcome the problem of :Given an integer n and a prime number p, the task is to find the largest x such that px (p raised to power x) divides n!.
+//  Returns largest power of p that divides n!
+int largestPower(int n, int p)
+{
+    int res = 0;
 
-//Legandre's theorem which is use to overcome the problem of :Given an integer n and a prime number p, the task is to find the largest x such that px (p raised to power x) divides n!.
-// Returns largest power of p that divides n! 
-int largestPower(int n, int p)  { 
-    int res = 0; 
-
-    // Calculate res = n/p + n/(p^2) + n/(p^3) + .... 
-    while (n > 0) { 
-        n /= p; 
-        res += n; 
-    } 
-    return res; 
-} 
-
+    // Calculate res = n/p + n/(p^2) + n/(p^3) + ....
+    while (n > 0)
+    {
+        n /= p;
+        res += n;
+    }
+    return res;
+}
 
 // Sparse Table
-// Fills lookup array 
+// Fills lookup array
 // lookup[][] in bottom up manner. [ this is min lookup array]
-void preprocess(vector<int>&arr, int n,vector<vector<int>>&lookup)
+void preprocess(vector<int> &arr, int n, vector<vector<int>> &lookup)
 {
-    // Initialize M for the 
+    // Initialize M for the
     // intervals with length 1
     for (int i = 0; i < n; i++)
         lookup[i][0] = i;
- 
-    // Compute values from smaller 
+
+    // Compute values from smaller
     // to bigger intervals
-    for (int j = 1; (1 << j) <= n; j++) 
+    for (int j = 1; (1 << j) <= n; j++)
     {
-        // Compute minimum value for 
+        // Compute minimum value for
         // all intervals with size
         // 2^j
-        for (int i = 0; (i + (1 << j) - 1) < n; i++) 
+        for (int i = 0; (i + (1 << j) - 1) < n; i++)
         {
-            // For arr[2][10], we 
+            // For arr[2][10], we
             // compare arr[lookup[0][3]]
             // and arr[lookup[3][3]]
-            if (arr[lookup[i][j - 1]]
-                < arr[lookup[i + (1 << (j - 1))][j - 1]])
+            if (arr[lookup[i][j - 1]] < arr[lookup[i + (1 << (j - 1))][j - 1]])
                 lookup[i][j] = lookup[i][j - 1];
             else
-                lookup[i][j]
-                    = lookup[i + (1 << (j - 1))][j - 1];
+                lookup[i][j] = lookup[i + (1 << (j - 1))][j - 1];
         }
     }
 }
- 
+
 // Returns minimum of arr[L..R]
-int query(vector<int>&arr, int L, int R,vector<vector<int>>&lookup)
+int query(vector<int> &arr, int L, int R, vector<vector<int>> &lookup)
 {
     // For [2,10], j = 3
     int j = (int)log2(R - L + 1);
- 
+
     // For [2,10], we compare arr[lookup[0][3]] and
     // arr[lookup[3][3]],
-    if (arr[lookup[L][j]]
-        <= arr[lookup[R - (1 << j) + 1][j]])
+    if (arr[lookup[L][j]] <= arr[lookup[R - (1 << j) + 1][j]])
         return arr[lookup[L][j]];
- 
+
     else
         return arr[lookup[R - (1 << j) + 1][j]];
 }
- 
+
 int main()
 {
     return 0;
@@ -924,56 +944,78 @@ int main()
 // If you know manhattan distance between two point let say (x1,y1) and (x2,y2) form (x,y) then there is formula for calculating
 // (x,y) as focus on matrix and draw simple lines between point these representing manhattan distance
 
-
-
-
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
 #ifndef ONLINE_JUDGE
-#define debug(x) cout<<#x<<" ";_print(x);cout<<endl;
-#define sep() cout<<"************************************"<<endl;
+#define debug(x)       \
+    cout << #x << " "; \
+    _print(x);         \
+    cout << endl;
+#define sep() cout << "************************************" << endl;
 #else
 #define debug(x)
 #define sep()
 #endif
-template<class T>void _print(T var){
-    cout<<var<<" ";
+template <class T>
+void _print(T var)
+{
+    cout << var << " ";
 }
-template<class T1,class T2>void _print(pair<T1,T2> p){
-    cout<<"{"<<p.first<<","<<p.second<<"}"<<" ";
+template <class T1, class T2>
+void _print(pair<T1, T2> p)
+{
+    cout << "{" << p.first << "," << p.second << "}" << " ";
 }
-template<class T> void _print(vector<T> v){
-    cout<<"[";for(T i:v)_print(i),_print(',');cout<<"]\n";
+template <class T>
+void _print(vector<T> v)
+{
+    cout << "[";
+    for (T i : v)
+        _print(i), _print(',');
+    cout << "]\n";
 }
-template<class T> void _print(set<T> st){
-    cout<<"[";for(T i:st)_print(i),_print(',');cout<<"]\n";
+template <class T>
+void _print(set<T> st)
+{
+    cout << "[";
+    for (T i : st)
+        _print(i), _print(',');
+    cout << "]\n";
 }
-template<class T1,class T2> void _print(map<T1,T2>mp){
-    cout<<"[\n";for(auto i:mp){_print("{"),_print(i.first),_print(":"),_print(i.second),_print("}");cout<<endl;}cout<<"]\n";
+template <class T1, class T2>
+void _print(map<T1, T2> mp)
+{
+    cout << "[\n";
+    for (auto i : mp)
+    {
+        _print("{"), _print(i.first), _print(":"), _print(i.second), _print("}");
+        cout << endl;
+    }
+    cout << "]\n";
 }
 
-void solve(){
-   vector<int>v={1,2,3};
-   vector<pair<int,int>>vp={{1,1},{2,2},{3,3}};
-   map<int,string>mp={{1,"harsh"},{2,"rohan"},{3,"mridul"}};
-   set<string>st={"cow","dog","buffalo"};
-   debug(v);
-   sep();
-   debug(mp);
-   sep();
-   debug(st);
-   sep();
-   debug(vp);
-
+void solve()
+{
+    vector<int> v = {1, 2, 3};
+    vector<pair<int, int>> vp = {{1, 1}, {2, 2}, {3, 3}};
+    map<int, string> mp = {{1, "harsh"}, {2, "rohan"}, {3, "mridul"}};
+    set<string> st = {"cow", "dog", "buffalo"};
+    debug(v);
+    sep();
+    debug(mp);
+    sep();
+    debug(st);
+    sep();
+    debug(vp);
 }
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t;
-    cin>>t;
-    while(t--)
+    cin >> t;
+    while (t--)
         solve();
     return 0;
 }
