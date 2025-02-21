@@ -498,7 +498,7 @@ void dfs(int vertex, int parent, vector<vector<int>> &g, vector<bool> &vis, vect
             continue;
         if (vis[child])
         {
-            low[vertex] = min(low[vertex], low[child]);
+            low[vertex] = min(low[vertex], tin[child]);
         }
         else
         {
