@@ -756,6 +756,46 @@ int query(vector<int> &arr, int L, int R, vector<vector<int>> &lookup)
         return arr[lookup[R - (1 << j) + 1][j]];
 }
 
+
+// This is merge sort but , it is also capable of calculating the number of inversion present in arr
+// we know inversion is basically if i<j but arr[i]>arr[j]
+// This will also mean it is giving the minimum number of ADJACENT swaps we need to sort the array completely
+ll countInversions(vector<ll>&arr,ll l,ll r){
+    if(l==r)return 0;
+    ll mid=(l+r)>>1;
+    ll x=countInversions(arr,l,mid);
+    ll y=countInversions(arr,mid+1,r);
+    ll inv=0;
+    vector<ll>temp;
+    ll i=l,j=mid+1;
+    while(i<=mid && j<=r){
+        if(arr[i]<arr[j]){
+            temp.push_back(arr[i]);
+            i++;
+            inv+=(j-(mid+1));
+        }else{
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+    while(i<=mid){
+        inv+=(j-(mid+1));
+        temp.push_back(arr[i]);
+        i++;
+    }
+    while(j<=r){
+        temp.push_back(arr[j]);
+        j++;
+    }
+    ll ct=0;
+    for(ll k=l;k<=r;k++){
+        arr[k]=temp[ct];
+        ct++;
+    }
+    return x+y+inv;
+}
+
+
 int main()
 {
     return 0;
