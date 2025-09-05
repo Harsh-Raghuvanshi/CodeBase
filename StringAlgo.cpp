@@ -198,7 +198,7 @@ struct Manacher {
             
             // Update the rightmost palindrome's boundary
             if (i + p[i] > r) {
-                l = i;
+                l = i - p[i];
                 r = i + p[i];
             }
         }
